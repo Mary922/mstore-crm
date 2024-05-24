@@ -10,17 +10,17 @@ import {
   CTableHeaderCell,
   CTableRow
 } from "@coreui/react";
-import { getUnitsThunk } from "../../../slices/UnitsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { UnitsModal } from "./UnitsModal";
+import { getBrandsThunk } from "../../../slices/BrandsSlice";
+import { BrandsModal } from "./BrandsModal";
 
-const Units = () => {
+const Brands = () => {
   const dispatch = useDispatch();
   const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [unit, setUnit] = useState("");
+  const [brand, setBrand] = useState("");
 
   useEffect(() => {
-    dispatch(getUnitsThunk());
+    dispatch(getBrandsThunk());
   }, []);
 
   const openModal = () => {
@@ -28,22 +28,22 @@ const Units = () => {
   };
   const closeModal = () => {
     setModalIsVisible(false);
-    setUnit(null);
+    setBrand(null);
   };
 
-  const units = useSelector(state => {
-    return state.units.units;
+  const brands = useSelector(state => {
+    return state.brands.brands;
   });
-  console.log("UNITS", units);
+  console.log("brands", brands);
 
-  const unitsList = units.map(unit => {
+  const brandsList = brands.map(brand => {
     return (
-      <CTableRow key={unit.unit_id} onClick={() => {
+      <CTableRow key={brand.brand_id} onClick={() => {
         openModal();
-        setUnit(unit);
+        setBrand(brand);
       }}>
-        <CTableDataCell>{unit.unit_id}</CTableDataCell>
-        <CTableDataCell>{unit.unit_name}</CTableDataCell>
+        <CTableDataCell>{brand.brand_id}</CTableDataCell>
+        <CTableDataCell>{brand.brand_name}</CTableDataCell>
       </CTableRow>
     );
   });
@@ -59,25 +59,25 @@ const Units = () => {
                 <CTableHead color="primary">
                   <CTableRow>
                     <CTableHeaderCell scope={"col"}>Id</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Unit name</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Brand name</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {unitsList}
+                  {brandsList}
                 </CTableBody>
               </CTable>
             </CCardBody>
           </CCard>
-          <CButton color="primary" onClick={openModal}>Добавить единицу измерения</CButton>
+          <CButton color="primary" onClick={openModal}>Добавить бренд</CButton>
         </CCol>
       </CRow>
       {
-        modalIsVisible ? <UnitsModal openModal={openModal}
+        modalIsVisible ? <BrandsModal openModal={openModal}
                                      closeModal={closeModal}
-                                     unit={unit} />
+                                     brand={brand} />
           : null
       }
     </>
   );
 };
-export default Units;
+export default Brands;

@@ -3,9 +3,22 @@ import { CButton, CModal, CModalHeader, CModalTitle, CModalFooter, CModalBody, C
 import { useDispatch } from "react-redux";
 import { createTagsThunk, getTagsThunk, updateTagsThunk } from "../../../slices/TagsSlice";
 
-const TagsModal = ({openModal,closeModal,tag}) => {
+const TagsModal = ({openModal,closeModal,tag,deleteTags}) => {
   const dispatch = useDispatch();
   const [tagValue, setTagValue] = useState(tag ? tag.tag_name : '');
+
+  const checkFilledInput = () => {
+    if (tagValue.length < 1) {
+      return false
+    }
+    return true;
+  }
+  const confirmDeleteTag = async () => {
+    const question = confirm('Are you sure you want to delete this tag?');
+    if (question) {
+      deleteTags();
+    }
+  }
 
   return (
     <>
@@ -26,6 +39,9 @@ const TagsModal = ({openModal,closeModal,tag}) => {
                                     onChange={(event) => setTagValue(event.target.value)}
                                     placeholder={'New tag name'}/>
           }
+          {
+            tag ?  <CButton color={"primary"} onClick={confirmDeleteTag}>Delete category</CButton> : null
+          }
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={closeModal}>
@@ -33,6 +49,10 @@ const TagsModal = ({openModal,closeModal,tag}) => {
           </CButton>
           {tag ?
             <CButton color="primary" onClick={async ()=> {
+              if (!checkFilledInput()) {
+                alert('Заполните данные');
+                return false;
+              }
               await dispatch(updateTagsThunk({
                 tagName: tagValue,
                 tagId: tag.tag_id
@@ -41,6 +61,11 @@ const TagsModal = ({openModal,closeModal,tag}) => {
               closeModal();
             }}>Сохранить</CButton>
             : <CButton color="primary" onClick={async ()=> {
+
+              if (!checkFilledInput()) {
+                alert('Заполните данные');
+                return false;
+              }
               await dispatch(createTagsThunk({tagName: tagValue}));
               await dispatch(getTagsThunk());
               closeModal();

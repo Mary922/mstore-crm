@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTagsThunk } from "../../../slices/TagsSlice";
+import { deleteTagsThunk, getTagsThunk } from "../../../slices/TagsSlice";
 import {
   CTableDataCell,
   CTableRow,
@@ -15,6 +15,7 @@ import {
   CButton
 } from "@coreui/react";
 import { TagsModal } from "./TagsModal";
+
 
 const Tags = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,11 @@ const Tags = () => {
     setModalIsVisible(false);
     setTag(null);
   };
+  const deleteTags = async () => {
+    await dispatch(deleteTagsThunk({tagId: tag.tag_id}));
+    await dispatch(getTagsThunk());
+    closeModal();
+  }
 
   const tags = useSelector(state => {
     return state.tags.tags;
@@ -46,7 +52,6 @@ const Tags = () => {
       }}>
         <CTableDataCell>{tag.tag_id}</CTableDataCell>
         <CTableDataCell>{tag.tag_name}</CTableDataCell>
-        <CTableDataCell>{tag.deleted_at}</CTableDataCell>
       </CTableRow>
     );
   });
@@ -63,7 +68,6 @@ const Tags = () => {
                   <CTableRow>
                     <CTableHeaderCell scope={"col"}>Id</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Tag name</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Deleted</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -78,7 +82,8 @@ const Tags = () => {
       {
         modalIsVisible ? <TagsModal openModal={openModal}
                                     closeModal={closeModal}
-                                    tag={tag} />
+                                    tag={tag}
+                                    deleteTags={deleteTags} />
           : null
       }
     </>

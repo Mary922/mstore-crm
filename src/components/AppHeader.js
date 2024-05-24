@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
@@ -19,7 +19,8 @@ import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
 
 const AppHeader = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   return (
@@ -63,6 +64,13 @@ const AppHeader = () => {
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />
         </CHeaderNav>
+        <CNavItem>
+          <CNavLink>
+            <div onClick={()=> {
+              navigate('/authorization');
+            }}>log in</div>
+          </CNavLink>
+        </CNavItem>
       </CContainer>
       <CHeaderDivider />
       <CContainer fluid>

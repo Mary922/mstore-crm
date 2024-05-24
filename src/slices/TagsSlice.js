@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTags,createTags,updateTags } from "../api/tags";
+import { getTags,createTags,updateTags,deleteTags } from "../api/tags";
 
 
 export const getTagsThunk = createAsyncThunk(
@@ -22,6 +22,13 @@ export const updateTagsThunk = createAsyncThunk(
   "Tags/updateTags",
   async function updateTagsAsync({tagName,tagId}) {
     const result = await updateTags(tagName,tagId);
+    return result.data;
+  }
+)
+export const deleteTagsThunk = createAsyncThunk(
+  "Tags/deleteTags",
+  async function deleteTagsAsync({tagId}) {
+    const result = await deleteTags(tagId);
     return result.data;
   }
 )
@@ -68,6 +75,17 @@ export const TagsSlice = createSlice({
       state.isLoaded = true;
     });
     builder.addCase(updateTagsThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(deleteTagsThunk.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteTagsThunk.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isLoaded = true;
+    });
+    builder.addCase(deleteTagsThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     })

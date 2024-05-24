@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { CButton, CModal, CModalHeader, CModalTitle, CModalFooter, CModalBody, CFormInput } from "@coreui/react";
 import { useDispatch } from "react-redux";
-import { createUnitsThunk, getUnitsThunk, updateUnitsThunk } from "../../../slices/UnitsSlice";
+import { createBrandsThunk, getBrandsThunk, updateBrandsThunk } from "../../../slices/BrandsSlice";
 
-const UnitsModal = ({openModal,closeModal,unit}) => {
+const BrandsModal = ({openModal,closeModal,brand}) => {
   const dispatch = useDispatch();
-  const [unitValue, setUnitValue] = useState(unit ? unit.unit_name : '');
+  const [brandValue, setBrandValue] = useState(brand ? brand.brand_name : '');
 
   const checkFilledInput = () => {
-    if (unitValue.length < 1) {
+    if (brandValue.length < 1) {
       return false
     }
     return true;
@@ -23,28 +23,28 @@ const UnitsModal = ({openModal,closeModal,unit}) => {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">{unit ? 'Редактирование единицы измерения' : 'Создание новой единицы измерения'}</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">{brand ? 'Редактирование бренда' : 'Создание нового бренда'}</CModalTitle>
         </CModalHeader>
         <CModalBody>
           {
-            unit ? <CFormInput value={unitValue}
-                              onChange={(event) => setUnitValue(event.target.value)} />
-              :  <CFormInput value={unitValue}
-                             onChange={(event) => setUnitValue(event.target.value)}
-                             placeholder={'New tag unit'}/>
+            brand ? <CFormInput value={brandValue}
+                               onChange={(event) => setBrandValue(event.target.value)} />
+              :  <CFormInput value={brandValue}
+                             onChange={(event) => setBrandValue(event.target.value)}
+                             placeholder={'New brand'}/>
           }
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={closeModal}>
             Close
           </CButton>
-          {unit ?
+          {brand ?
             <CButton color="primary" onClick={async ()=> {
-              await dispatch(updateUnitsThunk({
-                unitName: unitValue,
-                unitId: unit.unit_id
+              await dispatch(updateBrandsThunk({
+                brandName: brandValue,
+                brandId: brand.brand_id
               }));
-              await dispatch(getUnitsThunk());
+              await dispatch(getBrandsThunk());
               closeModal();
             }}>Сохранить</CButton>
             : <CButton color="primary" onClick={async ()=> {
@@ -52,8 +52,8 @@ const UnitsModal = ({openModal,closeModal,unit}) => {
                 alert('Заполните данные');
                 return false;
               }
-              await dispatch(createUnitsThunk({unitName: unitValue}));
-              await dispatch(getUnitsThunk());
+              await dispatch(createBrandsThunk({brandName: brandValue}));
+              await dispatch(getBrandsThunk());
               closeModal();
             }}>Сохранить</CButton>
           }
@@ -62,4 +62,4 @@ const UnitsModal = ({openModal,closeModal,unit}) => {
     </>
   )
 }
-export { UnitsModal }
+export { BrandsModal }

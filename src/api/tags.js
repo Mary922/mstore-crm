@@ -16,6 +16,11 @@ export const updateTags = (tagName,tagId) => {
   let result = Request.post(`${baseURL}/tags/update`,{tagName: tagName, tagId: tagId});
   return result;
 }
+export const deleteTags = (tagId) => {
+  let result = Request.post(`${baseURL}/tags/delete`,{tagId: tagId});
+  return result;
+}
+
 
 
 
