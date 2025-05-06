@@ -5,8 +5,7 @@ import {
   cilBasket,
   cilCart,
   cilPuzzle,
-  cilStar,
-  cilMoney
+  cilImage
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -70,12 +69,7 @@ const _nav = [
     to: '/products',
     icon: <CIcon icon={cilBasket} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Prices',
-    to: '/prices',
-    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
-  },
+
   {
     component: CNavItem,
     name: 'Clients',
@@ -89,36 +83,54 @@ const _nav = [
     icon: <CIcon icon={cilCart} customClassName="nav-icon" />,
   },
   {
-    component: CNavTitle,
-    name: 'Extras',
-  },
-  {
     component: CNavGroup,
-    name: 'Pages',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+    name: 'Images',
+    to: '/base',
+    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Login',
-        to: '/login',
+        name: 'Crm',
+        to: '/images/crm',
       },
       {
         component: CNavItem,
-        name: 'Register',
-        to: '/register',
+        name: 'Website',
+        to: '/images/web',
       },
-      {
-        component: CNavItem,
-        name: 'Error 404',
-        to: '/404',
-      },
-      {
-        component: CNavItem,
-        name: 'Error 500',
-        to: '/500',
-      },
-    ],
-  },
+    ]}
+
+  // {
+  //   component: CNavTitle,
+  //   name: 'Extras',
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Pages',
+  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Login',
+  //       to: '/login',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Register',
+  //       to: '/register',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Error 404',
+  //       to: '/404',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Error 500',
+  //       to: '/500',
+  //     },
+  //   ],
+  // },
 
 ]
 

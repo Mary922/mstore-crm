@@ -1,8 +1,9 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
+import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from "@coreui/react";
 import CIcon from '@coreui/icons-react'
+import {cilHappy} from '@coreui/icons'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
@@ -30,7 +31,9 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
+        {/*<CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />*/}
+        <div>Manyasha Store</div>
+        <CIcon icon={cilHappy} height={35} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>
       <CSidebarNav>

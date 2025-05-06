@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import {
   CCard,
   CCardBody,
   CFormInput,
   CFormLabel,
-  CCardHeader, CButton, CFormSelect, CFormTextarea
+  CCardHeader,
+  CButton,
+  CFormSelect,
+  CFormTextarea,
+  CTableRow,
+  CCol,
+  CTable,
+  CTableHead,
+  CTableHeaderCell, CTableBody, CRow, CTableDataCell, CInputGroup, CCardGroup, CForm, CFormCheck
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct, updateProduct,createProduct } from "../../api/products";
+import { getProduct, updateProduct, createProduct } from "../../api/products";
 import { getTagsThunk } from "../../slices/TagsSlice";
 import Select from "react-select";
 import CIcon from "@coreui/icons-react";
@@ -20,8 +28,13 @@ import { getSeasonsThunk } from "../../slices/SeasonsSlice";
 import { getSizesThunk } from "../../slices/SizesSlice";
 import { getCountriesThunk } from "../../slices/CountriesSlice";
 import { getBrandsThunk } from "../../slices/BrandsSlice";
-import { VALUE_NOT_SELECTED } from "../../constants";
+import { GENDER_NAME, SIZES_NAME, VALUE_NOT_SELECTED, SIZES, GENDER } from "../../constants";
 import { getProductsThunk } from "../../slices/ProductsSlice";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment/moment";
+import { uploadImage } from "../../api/uploads";
+import { getGendersThunk } from "../../slices/GenderSlice";
 
 const initialState = {
   product_name: "",
@@ -31,9 +44,12 @@ const initialState = {
   unit_id: -1,
   product_description: "",
   season_id: -1,
-  size_id: -1,
+  sizes: [],
   country_id: -1,
   brand_id: -1,
+  gender_id: -1,
+  imageId: "",
+  imageIds: []
 };
 const Product = () => {
   const params = useParams();
@@ -42,8 +58,19 @@ const Product = () => {
   const currentProductId = params.productId;
 
   const [product, setProduct] = useState({});
+  const [prices, setPrices] = useState([]);
   const [form, setForm] = useState(initialState);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [priceCreateMode, setPriceCreateMode] = useState(false);
+  const [priceValue, setPriceValue] = useState("");
+  const [actualPrice, setActualPrice] = useState("");
+  const [changePriceDate, setChangePriceDate] = useState(new Date());
+
+  const [files, setFiles] = useState(null);
+  const [imageId, setImageId] = useState("");
+  const [imageIds, setImageIds] = useState([]);
+
+
 
   useEffect(() => {
     dispatch(getTagsThunk());
@@ -54,6 +81,7 @@ const Product = () => {
     dispatch(getSizesThunk());
     dispatch(getCountriesThunk());
     dispatch(getBrandsThunk());
+    dispatch(getGendersThunk())
   }, []);
   const tagsList = useSelector(state => {
     return state.tags.tags;
@@ -79,53 +107,87 @@ const Product = () => {
   const brandsList = useSelector(state => {
     return state.brands.brands;
   });
+  const gendersList = useSelector(state => {
+    return state.genders.genders;
+  })
 
   useEffect(() => {
     (async () => {
         if (currentProductId) {
           try {
             const result = await getProduct(currentProductId);
-            // console.log("RES PRODUCT", result);
-            setProduct(result.data);
-            const product = result.data;
+            console.log("RES PRODUCT", result);
+
+            const product = result.data.product;
+            setProduct(product);
+
+            if (result?.data?.prices) {
+              const prices = result.data.prices;
+              setPrices(prices);
+            }
+            if (result?.data?.priceActual) {
+              const actual = result.data.priceActual;
+              setActualPrice(actual);
+            }
+            // console.log('pricespricesprices',prices);
 
             let selectedTagsOptions = [];
             let selectedCategoriesOptions = [];
             let selectedColorsOptions = [];
-            for (let i = 0; i < product.Tags.length; i++) {
-              let newObj = {
-                value: product.Tags[i].tag_id,
-                label: product.Tags[i].tag_name
-              };
-              selectedTagsOptions.push(newObj);
+            let selectedSizesOptions = [];
+            if (product?.Tags) {
+              for (let i = 0; i < product.Tags.length; i++) {
+                let newObj = {
+                  value: product.Tags[i].tag_id,
+                  label: product.Tags[i].tag_name
+                };
+                selectedTagsOptions.push(newObj);
+              }
             }
-            for (let i = 0; i < product.Categories.length; i++) {
-              let newObj = {
-                value: product.Categories[i].category_id,
-                label: product.Categories[i].category_name
-              };
-              selectedCategoriesOptions.push(newObj);
+            if (product?.Categories) {
+              for (let i = 0; i < product.Categories.length; i++) {
+                let newObj = {
+                  value: product.Categories[i].category_id,
+                  label: product.Categories[i].category_name
+                };
+                selectedCategoriesOptions.push(newObj);
+              }
             }
-            for (let i = 0; i < product.Colors.length; i++) {
-              let newObj = {
-                value: product.Colors[i].color_id,
-                label: product.Colors[i].color_name
-              };
-              selectedColorsOptions.push(newObj);
+            if (product?.Colors) {
+              for (let i = 0; i < product.Colors.length; i++) {
+                let newObj = {
+                  value: product.Colors[i].color_id,
+                  label: product.Colors[i].color_name
+                };
+                selectedColorsOptions.push(newObj);
+              }
             }
 
-            setForm({
-              product_name: result.data.product_name,
-              tags: selectedTagsOptions,
-              categories: selectedCategoriesOptions,
-              colors: selectedColorsOptions,
-              unit_id: result.data.Unit.unit_id,
-              season_id: result.data.Season.season_id,
-              size_id: result.data.Size.size_id,
-              country_id: result.data.Country.country_id,
-              brand_id: result.data.Brand.brand_id,
-              product_description: result.data.product_description
-            });
+            if (product.Sizes) {
+              for (let i = 0; i < product.Sizes.length; i++) {
+                let newObj = {
+                  value: product.Sizes[i].size_id,
+                  label: product.Sizes[i].size_name,
+                  type: product.Sizes[i].size_type
+                };
+                selectedSizesOptions.push(newObj);
+              }
+            }
+            if (product?.Unit) {
+              setForm({
+                product_name: product.product_name,
+                tags: selectedTagsOptions,
+                categories: selectedCategoriesOptions,
+                colors: selectedColorsOptions,
+                unit_id: product.Unit.unit_id,
+                season_id: product.Season.season_id,
+                sizes: selectedSizesOptions,
+                country_id: product.Country.country_id,
+                brand_id: product.Brand.brand_id,
+                product_description: product.product_description
+              });
+            }
+
           } catch (error) {
             console.log(error);
           }
@@ -134,12 +196,11 @@ const Product = () => {
         }
       }
     )();
-  }, []);
-  // console.log("Product STATE", product);
-  console.log("FORM", form);
+  }, [priceValue]);
+
 
   const setFieldChange = (field, value) => {
-    console.log(field, value);
+    // console.log(field, value);
     setForm((prevState) => {
       // console.log("prev", prevState);
       let newState = { ...prevState, [field]: value };
@@ -161,7 +222,7 @@ const Product = () => {
   for (let i = 0; i < categoriesList.length; i++) {
     let newObj = {
       value: categoriesList[i].category_id,
-      label: categoriesList[i].category_name
+      label: categoriesList[i].category_name + " " + "(" + GENDER_NAME[categoriesList[i].gender] + ")"
     };
     categoriesOptions.push(newObj);
   }
@@ -190,11 +251,12 @@ const Product = () => {
     };
     seasonsOptions.push(newObj);
   }
-  const sizesOptions = [VALUE_NOT_SELECTED];
+  const sizesOptions = [SIZES.NOT_SELECTED];
   for (let i = 0; i < sizesList.length; i++) {
     let newObj = {
       value: sizesList[i].size_id,
-      label: sizesList[i].size_by_height
+      label: sizesList[i].size_name,
+      type: sizesList[i].size_type,
     };
     sizesOptions.push(newObj);
   }
@@ -214,11 +276,20 @@ const Product = () => {
     };
     brandsOptions.push(newObj);
   }
+  const gendersOptions = [VALUE_NOT_SELECTED];
+  for (let i = 0; i < gendersList.length; i++) {
+    let newObj = {
+      value: gendersList[i].gender_id,
+      label: gendersList[i].gender_name
+    };
+    gendersOptions.push(newObj);
+  }
 
   const handleUpdateProduct = async () => {
     const arrayOfTagIds = [];
     const arrayOfCategoriesIds = [];
     const arrayOfColorsIds = [];
+    const arrayOfSizesIds = [];
     for (let i = 0; i < form.tags.length; i++) {
       arrayOfTagIds.push(form.tags[i].value);
     }
@@ -228,6 +299,15 @@ const Product = () => {
     for (let i = 0; i < form.colors.length; i++) {
       arrayOfColorsIds.push(form.colors[i].value);
     }
+    for (let i = 0; i < form.sizes.length; i++) {
+      arrayOfSizesIds.push(form.sizes[i].value);
+    }
+
+    let newPrice = {
+      product_id: currentProductId,
+      price: priceValue,
+      time_beginning: changePriceDate
+    };
     await updateProduct({
       productId: currentProductId,
       productName: form.product_name,
@@ -236,18 +316,25 @@ const Product = () => {
       productColorsIds: arrayOfColorsIds,
       productUnitId: form.unit_id,
       productSeasonId: form.season_id,
-      productSizeId: form.size_id,
+      productSizesIds: arrayOfSizesIds,
       productCountryId: form.country_id,
       productBrandId: form.brand_id,
-      productDescription: form.product_description
+      productGenderId: form.gender_id,
+      productDescription: form.product_description,
+      productPrice: newPrice,
+      imageId: imageId,
+      imageIds: imageIds
     });
     setIsEditMode(false);
+    setPriceValue("");
+    setChangePriceDate(new Date());
   };
 
   const handleCreateProduct = async () => {
     const arrayOfTagIds = [];
     const arrayOfCategoriesIds = [];
     const arrayOfColorsIds = [];
+    const arrayOfSizesIds = [];
     for (let i = 0; i < form.tags.length; i++) {
       arrayOfTagIds.push(form.tags[i].value);
     }
@@ -257,58 +344,94 @@ const Product = () => {
     for (let i = 0; i < form.colors.length; i++) {
       arrayOfColorsIds.push(form.colors[i].value);
     }
+    for (let i = 0; i < form.sizes.length; i++) {
+      arrayOfSizesIds.push(form.sizes[i].value);
+    }
     await createProduct({
       productName: form.product_name,
+      price: priceValue,
       productTagsIds: arrayOfTagIds,
       productCategoriesIds: arrayOfCategoriesIds,
       productColorsIds: arrayOfColorsIds,
       productUnitId: form.unit_id,
       productSeasonId: form.season_id,
-      productSizeId: form.size_id,
+      productSizesIds: arrayOfSizesIds,
       productCountryId: form.country_id,
       productBrandId: form.brand_id,
-      productDescription: form.product_description
+      productGenderId: form.gender_id,
+      productDescription: form.product_description,
+      imageId: imageId,
+      imageIds: imageIds
+
     });
-    navigate(-2);
+    //navigate(-2);
     dispatch(getProductsThunk());
-  }
+  };
 
   const checkFilledForms = () => {
     let arrayOfNotFilledInputs = [];
     if (form.product_name.trim().length < 1) {
-      arrayOfNotFilledInputs.push('name');
+      arrayOfNotFilledInputs.push("name");
     }
     if (form.unit_id === -1) {
-      arrayOfNotFilledInputs.push('unit');
+      arrayOfNotFilledInputs.push("unit");
     }
     if (form.tags.length < 1) {
-      arrayOfNotFilledInputs.push('tags');
+      arrayOfNotFilledInputs.push("tags");
     }
     if (form.categories.length < 1) {
-      arrayOfNotFilledInputs.push('categories');
+      arrayOfNotFilledInputs.push("categories");
     }
     if (form.colors.length < 1) {
-      arrayOfNotFilledInputs.push('colors');
+      arrayOfNotFilledInputs.push("colors");
     }
     if (form.season_id === -1) {
-      arrayOfNotFilledInputs.push('season');
+      arrayOfNotFilledInputs.push("season");
     }
-    if (form.size_id === -1) {
-      arrayOfNotFilledInputs.push('size');
+    if (form.sizes.length < 1) {
+      arrayOfNotFilledInputs.push("sizes");
     }
     if (form.country_id === -1) {
-      arrayOfNotFilledInputs.push('country');
+      arrayOfNotFilledInputs.push("country");
     }
     if (form.brand_id === -1) {
-      arrayOfNotFilledInputs.push('brand');
+      arrayOfNotFilledInputs.push("brand");
     }
-    console.log({ arrayOfNotFilledInputs });
+    if (form.gender_id === -1) {
+      arrayOfNotFilledInputs.push("gender");
+    }
+    // console.log({ arrayOfNotFilledInputs });
     if (arrayOfNotFilledInputs.length > 0) {
-      alert(`Fill ${arrayOfNotFilledInputs.join(',')}`);
-      return false
+      alert(`Fill ${arrayOfNotFilledInputs.join(",")}`);
+      return false;
     }
     return true;
-  }
+  };
+
+  const pricesList = prices.map(price => {
+    return (
+      <CTableRow key={price.price_id}>
+        <CTableDataCell>{price.price_id}</CTableDataCell>
+        <CTableDataCell>{price.price}</CTableDataCell>
+        <CTableDataCell>{moment.unix(price.time_beginning).format("DD.MM.YYYY HH:mm")}</CTableDataCell>
+      </CTableRow>
+    );
+  });
+  const priceCreateToggleMode = () => {
+    setPriceCreateMode(!priceCreateMode);
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      setFiles(e.target.files);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    const res = await uploadImage(files);
+    setImageIds(res.imageIds);
+  };
+
 
   return (
     <>
@@ -321,6 +444,7 @@ const Product = () => {
               : null
           }
         </CCardHeader>
+
         <CCardBody>
           <CFormLabel>Name: </CFormLabel>
           <CFormInput type={"text"}
@@ -376,15 +500,31 @@ const Product = () => {
                        value={form.season_id}
                        onChange={(event) => setFieldChange("season_id", Number.parseInt(event.target.value))}
           />
-          <CFormLabel>Size: </CFormLabel>
-          <CFormSelect size="sm"
-                       className="mb-3"
-                       aria-label="Small select example"
-                       disabled={!isEditMode}
-                       options={sizesOptions}
-                       value={form.size_id}
-                       onChange={(event) => setFieldChange("size_id", Number.parseInt(event.target.value))}
+          {/*{optionsSizesCheckbox.map((option) => (*/}
+          {/*  <CFormCheck*/}
+          {/*    key={option.id}*/}
+          {/*    id={option.id}*/}
+          {/*    label={option.label}*/}
+          {/*    checked={selectedOption === option.id}*/}
+          {/*    onChange={() => handleChangeCheckbox(option.id)}*/}
+          {/*    disabled={selectedOption !== null && selectedOption !== option.id}*/}
+          {/*  />*/}
+          {/*))}*/}
+          {/*<br />*/}
+
+          <CFormLabel>Sizes: </CFormLabel>
+          <Select isMulti
+                  classNamePrefix="select"
+                  className="basic-multi-select"
+                  disabled={!isEditMode}
+                  name={"sizes"}
+                  options={sizesOptions}
+                  value={form.sizes}
+                  getOptionLabel={option => `${option.label} (${SIZES_NAME[option.type]})`}
+                  getOptionValue={(option) => option.value}
+                  onChange={(event) => setFieldChange("sizes", (event))}
           />
+          <br />
           <CFormLabel>Country: </CFormLabel>
           <CFormSelect size="sm"
                        className="mb-3"
@@ -404,6 +544,16 @@ const Product = () => {
                        onChange={(event) => setFieldChange("brand_id", Number.parseInt(event.target.value))}
           />
 
+          <CFormLabel>Gender: </CFormLabel>
+          <CFormSelect size="sm"
+                       className="mb-3"
+                       aria-label="Small select example"
+                       disabled={!isEditMode}
+                       options={gendersOptions}
+                       value={form.gender_id}
+                       onChange={(event) => setFieldChange("gender_id", Number.parseInt(event.target.value))}
+          />
+
           <CFormTextarea id="exampleFormControlTextarea1"
                          label="Description:"
                          rows={3}
@@ -414,16 +564,65 @@ const Product = () => {
           />
 
         </CCardBody>
+        :
       </CCard>
+      <CRow>
+        <CCol xs={12}>
+          <CCard>
+            <CCardHeader>Prices</CCardHeader>
+            <CCardBody>
+              <CTable striped hover bordered>
+                <CTableHead color="primary">
+                  <CTableRow>
+                    <CTableHeaderCell scope={"col"}>Price id</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Price</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Time beginning</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {pricesList}
+                </CTableBody>
+              </CTable>
+              <div>Actual price: {actualPrice.price} </div>
+            </CCardBody>
+            {
+              priceCreateMode ?
+                <CCardGroup style={{ marginLeft: "15px", marginBottom: "20px" }}>
+                  <CFormInput value={priceValue}
+                              onChange={event => setPriceValue(event.target.value)}
+                              placeholder={"price"}
+                              style={{ width: "50%", marginRight: "10px" }} />
+                  <DatePicker selected={changePriceDate} onChange={date => setChangePriceDate((date))} />
+                </CCardGroup>
+                : null
+            }
+            <CButton style={{ width: "100px", marginBottom: "10px", marginLeft: "15px" }}
+                     onClick={priceCreateToggleMode}>
+              {
+                priceCreateMode ? "Dont add price" : "Add price"
+              }
+            </CButton>
+            <CRow>
+              <CForm id={"form"}>
+                <CFormLabel htmlFor={"name"}>Image:</CFormLabel>
+                <CFormInput id={"file"} type={"file"} onChange={handleFileChange} multiple={true}></CFormInput>
+                <CButton onClick={handleUploadImage}>Загрузить картинку</CButton>
+              </CForm>
+            </CRow>
+          </CCard>
+        </CCol>
+      </CRow>
+
       {
         currentProductId ?
           <CButton onClick={handleUpdateProduct}>Обновить продукт</CButton>
           :
-          <CButton onClick={()=> {
+          <CButton onClick={() => {
             if (!checkFilledForms()) {
               // alert('Заполните данные');
               return false;
-            };
+            }
+            ;
             handleCreateProduct();
             navigate(-1);
           }}>Добавить продукт</CButton>

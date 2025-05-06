@@ -27,7 +27,7 @@ const Products = () => {
   const products = useSelector(state => {
     return state.products.products
   })
-  console.log('PRODUCTS', products);
+  // console.log('PRODUCTS', products);
 
   const redirectToProduct = (id) => {
     navigate(`/product/${id}`);
@@ -45,11 +45,12 @@ const Products = () => {
         <CTableDataCell>{product.product_id}</CTableDataCell>
         <CTableDataCell>{product.product_name}</CTableDataCell>
         <CTableDataCell>{product.Unit.unit_name}</CTableDataCell>
+        <CTableDataCell>{product.price}</CTableDataCell>
         <CTableDataCell>{product.Tags.map(tag => tag.tag_name).join(', ')}</CTableDataCell>
         <CTableDataCell>{product.Categories.map(category => category.category_name).join(', ')}</CTableDataCell>
         <CTableDataCell>{product.Colors.map(color => color.color_name).join(', ')}</CTableDataCell>
         <CTableDataCell>{product.Season.season_name}</CTableDataCell>
-        <CTableDataCell>{product.Size.size_by_height}</CTableDataCell>
+        <CTableDataCell>{product.Sizes.map(size => size.size_name).join(', ')}</CTableDataCell>
         <CTableDataCell>{product.Country.country_name}</CTableDataCell>
         <CTableDataCell>{product.Brand.brand_name}</CTableDataCell>
         <CTableDataCell>{product.product_description}</CTableDataCell>
@@ -67,17 +68,20 @@ const Products = () => {
         <CCol xs={12}>
           <CCard>
             <CCardBody>
+              <CButton onClick={redirectToNewProduct}>Add new product</CButton>
+
               <CTable striped hover bordered>
                 <CTableHead color="primary">
                   <CTableRow>
                     <CTableHeaderCell scope={"col"}>Id</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Product name</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Unit</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Price</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Tags</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Categories</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Colors</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Season</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Size</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Sizes</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Country</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Brand</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Description</CTableHeaderCell>
@@ -91,7 +95,6 @@ const Products = () => {
               </CTable>
             </CCardBody>
           </CCard>
-          <CButton onClick={redirectToNewProduct}>Add new product</CButton>
         </CCol>
       </CRow>
     </>

@@ -12,16 +12,16 @@ export const getCategoriesThunk = createAsyncThunk(
 
 export const createCategoriesThunk = createAsyncThunk(
   "Categories/createCategories",
-  async function createCategoriesAsync({categoryName}) {
-    const result = await createCategories(categoryName);
+  async function createCategoriesAsync({categoryName,gender,parentId}) {
+    const result = await createCategories(categoryName,gender,parentId);
     return result.data;
   }
 )
 
 export const updateCategoriesThunk = createAsyncThunk(
   "Categories/updateCategories",
-  async function updateCategoriesAsync({categoryName,categoryId}) {
-    const result = await updateCategories(categoryName,categoryId);
+  async function updateCategoriesAsync({categoryName,categoryId,gender,parentId}) {
+    const result = await updateCategories(categoryName,categoryId,gender,parentId);
     return result.data;
   }
 )

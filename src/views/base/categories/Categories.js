@@ -15,6 +15,8 @@ import {
 } from "@coreui/react";
 import { getCategoriesThunk,deleteCategoriesThunk } from "../../../slices/CategoriesSlice";
 import CategoriesModal from "./CategoriesModal";
+import { GENDER, GENDER_NAME } from "../../../constants";
+import { getGenders } from "../../../api/genders";
 
 const Categories = () => {
   const dispatch = useDispatch();
@@ -42,8 +44,11 @@ const Categories = () => {
     return state.categories.categories;
   });
   console.log("CATEGORIES", categories);
+  console.log('category', category);
 
   const categoriesList = categories.map(category => {
+    const parentCategory = categories.find(cat => cat.category_id === category.parent_id);
+    console.log('parentCategory', parentCategory);
     return (
       <CTableRow key={category.category_id} onClick={() => {
         openModal();
@@ -51,6 +56,8 @@ const Categories = () => {
       }}>
         <CTableDataCell>{category.category_id}</CTableDataCell>
         <CTableDataCell>{category.category_name}</CTableDataCell>
+        <CTableDataCell>{GENDER_NAME[category.gender]}</CTableDataCell>
+        <CTableDataCell> {parentCategory ? parentCategory.category_name : "—"}</CTableDataCell>
       </CTableRow>
     );
   });
@@ -67,6 +74,8 @@ const Categories = () => {
                   <CTableRow>
                     <CTableHeaderCell scope={"col"}>Id</CTableHeaderCell>
                     <CTableHeaderCell scope={"col"}>Category name</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Gender</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Родительская категория</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>

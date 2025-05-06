@@ -10,7 +10,6 @@ import {
   CTableRow
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSeasonsThunk } from "../../../slices/SeasonsSlice";
 import { getCountriesThunk } from "../../../slices/CountriesSlice";
 
 const Countries = () => {

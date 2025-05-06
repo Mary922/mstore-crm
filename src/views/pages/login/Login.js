@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -15,8 +15,27 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import {signin} from "../../../api/auth";
 
 const Login = () => {
+  const [username,setUsername]= useState('');
+  const [password,setPassword]= useState('');
+
+  const login = async (e) => {
+    const result = await signin({username:username,password:password});
+    console.log('TOK',result.data.accessToken);
+
+    if (result.data?.accessToken) {
+      localStorage.setItem('user',JSON.stringify(result.data));
+      window.location.replace('/')
+    } else {
+      alert('Auth error,no token')
+    }
+
+
+  }
+
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -32,7 +51,12 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -42,11 +66,13 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" onClick={login}>
                           Login
                         </CButton>
                       </CCol>

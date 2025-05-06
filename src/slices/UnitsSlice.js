@@ -43,7 +43,7 @@ export const UnitsSlice = createSlice({
     builder.addCase(getUnitsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isLoaded = true;
-      console.log('PASDASDASD', action.payload);
+      // console.log('PASDASDASD', action.payload);
       state.units = action.payload;
 
     });

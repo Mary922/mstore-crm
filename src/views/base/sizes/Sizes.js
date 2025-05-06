@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  CButton,
   CCard, CCardBody,
   CCol, CRow,
   CTable,
@@ -11,6 +12,7 @@ import {
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSizesThunk } from "../../../slices/SizesSlice";
+import { SIZES, SIZES_NAME } from "../../../constants";
 
 const Sizes = () => {
   const dispatch = useDispatch();
@@ -30,7 +32,8 @@ const Sizes = () => {
         setSize(size);
       }}>
         <CTableDataCell>{size.size_id}</CTableDataCell>
-        <CTableDataCell>{size.size_by_height}</CTableDataCell>
+        <CTableDataCell>{SIZES_NAME[size.size_type]}</CTableDataCell>
+        <CTableDataCell>{size.size_name}</CTableDataCell>
       </CTableRow>
     );
   });
@@ -46,7 +49,8 @@ const Sizes = () => {
                 <CTableHead color="primary">
                   <CTableRow>
                     <CTableHeaderCell scope={"col"}>Id</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Size by height</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Size type</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Size name</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>

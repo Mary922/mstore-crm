@@ -8,6 +8,7 @@ import { SeasonsSlice } from "../slices/SeasonsSlice";
 import { SizesSlice } from "../slices/SizesSlice";
 import { CountriesSlice } from "../slices/CountriesSlice";
 import { BrandsSlice } from "../slices/BrandsSlice";
+import { GendersSlice } from "../slices/GenderSlice";
 
 
 const Store = configureStore({
@@ -21,6 +22,7 @@ const Store = configureStore({
     sizes: SizesSlice.reducer,
     countries: CountriesSlice.reducer,
     brands: BrandsSlice.reducer,
+    genders: GendersSlice.reducer,
   }
 })
 export default Store;
