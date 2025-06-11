@@ -1,10 +1,8 @@
 import { Request } from "./request";
-
-
-let baseURL = 'http://127.0.0.1:3002';
+import {BASE_URL} from "../config";
 
 
 export const getSizes = () => {
-  let result = Request.get(`${baseURL}/sizes/get`);
+  let result = Request.get(`${BASE_URL}/sizes/get`);
   return result;
 }

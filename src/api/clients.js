@@ -1,9 +1,8 @@
 import { Request } from "./request";
+import {BASE_URL} from "../config";
 
-
-let baseURL = 'http://127.0.0.1:3002';
 
 export const getClients = () => {
-  let result = Request.get(`${baseURL}/clients`);
+  let result = Request.get(`${BASE_URL}/clients`);
   return result;
 }

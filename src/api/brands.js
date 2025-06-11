@@ -1,17 +1,15 @@
 import { Request } from "./request";
-
-
-let baseURL = 'http://127.0.0.1:3002';
+import {BASE_URL} from "../config";
 
 export const getBrands = () => {
-  let result = Request.get(`${baseURL}/brands/get`);
+  let result = Request.get(`${BASE_URL}/brands/get`);
   return result;
 }
 export const createBrands = (brandName) => {
-  let result = Request.post(`${baseURL}/brands/create`, {brandName: brandName});
+  let result = Request.post(`${BASE_URL}/brands/create`, {brandName: brandName});
   return result;
 }
 export const updateBrands = (brandName,brandId) => {
-  let result = Request.post(`${baseURL}/brands/update`,{brandName: brandName, brandId: brandId});
+  let result = Request.post(`${BASE_URL}/brands/update`,{brandName: brandName, brandId: brandId});
   return result;
 }

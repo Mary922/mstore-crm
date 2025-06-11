@@ -1,26 +1,26 @@
 import { Request } from "./request";
+import {BASE_URL} from "../config";
 
-let baseURL = 'http://127.0.0.1:3002';
 
 export const getCategories = () => {
-  let result = Request.get(`${baseURL}/categories`);
+  let result = Request.get(`${BASE_URL}/categories`);
   return result;
 }
 export const createCategories = (categoryName,gender,parentId) => {
-  let result = Request.post(`${baseURL}/categories/create`, {categoryName: categoryName,gender: gender,parentId:parentId});
+  let result = Request.post(`${BASE_URL}/categories/create`, {categoryName: categoryName,gender: gender,parentId:parentId});
   return result;
 }
 export const updateCategories = (categoryName,categoryId,gender,parentId) => {
-  let result = Request.post(`${baseURL}/categories/update`,{categoryName: categoryName, categoryId: categoryId, gender: gender,parentId:parentId});
+  let result = Request.post(`${BASE_URL}/categories/update`,{categoryName: categoryName, categoryId: categoryId, gender: gender,parentId:parentId});
   return result;
 }
 export const deleteCategories = (categoryId) => {
-  let result = Request.post(`${baseURL}/categories/delete`,{categoryId: categoryId});
+  let result = Request.post(`${BASE_URL}/categories/delete`,{categoryId: categoryId});
   return result;
 }
 
 export const getParentsCategories = () => {
-  let result = Request.get(`${baseURL}/categories/parents/get`);
+  let result = Request.get(`${BASE_URL}/categories/parents/get`);
   return result;
 }
 

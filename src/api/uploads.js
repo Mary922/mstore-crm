@@ -1,7 +1,6 @@
 import { Request } from "./request";
+import {BASE_URL} from "../config";
 
-
-let baseURL = 'http://127.0.0.1:3002';
 
 export const uploadImage = (files) => {
 
@@ -14,7 +13,7 @@ export const uploadImage = (files) => {
     }
 
     try {
-      const result = Request.post(`${baseURL}/upload_files`, formData, { "content-type": "multipart/form-data" });
+      const result = Request.post(`${BASE_URL}/upload_files`, formData, { "content-type": "multipart/form-data" });
       return result;
     } catch (error) {
       console.log(error);
@@ -37,7 +36,7 @@ export const uploadImageStatic = (files, type, field) => {
     formData.append("field", field);
 
     try {
-      const result = Request.post(`${baseURL}/upload_files/static`, formData, { "content-type": "multipart/form-data" });
+      const result = Request.post(`${BASE_URL}/upload_files/static`, formData, { "content-type": "multipart/form-data" });
       return result;
     } catch (error) {
       console.log(error);
