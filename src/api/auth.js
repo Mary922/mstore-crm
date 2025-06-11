@@ -1,6 +1,6 @@
 import { Request } from "./request";
 
-let baseURL = "http://127.0.0.1:3001";
+let baseURL = process.env.BASE_URL;
 
 export const signin = (data) => {
   let result = Request.post(`${baseURL}/crm/signin`, data);

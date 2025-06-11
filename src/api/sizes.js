@@ -1,7 +1,8 @@
 import { Request } from "./request";
 
 
-let baseURL = 'http://127.0.0.1:3001';
+let baseURL = process.env.BASE_URL;
+
 
 export const getSizes = () => {
   let result = Request.get(`${baseURL}/sizes/get`);
