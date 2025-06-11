@@ -1,6 +1,6 @@
 import { Request } from "./request";
 
-let baseURL = process.env.BASE_URL;
+let baseURL = 'http://127.0.0.1:3002';
 
 export const getCategories = () => {
   let result = Request.get(`${baseURL}/categories`);
