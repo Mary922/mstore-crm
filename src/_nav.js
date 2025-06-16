@@ -23,68 +23,68 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Units',
+        name: 'Единицы измерения',
         to: '/base/units',
       },
       {
         component: CNavItem,
-        name: 'Tags',
+        name: 'Теги',
         to: '/base/tags',
       },
       {
         component: CNavItem,
-        name: 'Colors',
+        name: 'Цвета',
         to: '/base/colors',
       },
       {
         component: CNavItem,
-        name: 'Categories',
+        name: 'Категории',
         to: '/base/categories',
       },
       {
         component: CNavItem,
-        name: 'Seasons',
+        name: 'Сезоны',
         to: '/base/seasons',
       },
       {
         component: CNavItem,
-        name: 'Sizes',
+        name: 'Размеры',
         to: '/base/sizes',
       },
       {
         component: CNavItem,
-        name: 'Countries',
+        name: 'Страны',
         to: '/base/countries',
       },
       {
         component: CNavItem,
-        name: 'Brands',
+        name: 'Бренды',
         to: '/base/brands',
       }
     ],
   },
   {
     component: CNavItem,
-    name: 'Products',
+    name: 'Продукты',
     to: '/products',
     icon: <CIcon icon={cilBasket} customClassName="nav-icon" />,
   },
 
   {
     component: CNavItem,
-    name: 'Clients',
+    name: 'Клиенты',
     to: '/clients',
     icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Orders',
+    name: 'Заказы',
     to: '/orders',
     icon: <CIcon icon={cilCart} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,
-    name: 'Images',
+    name: 'Картинки',
     to: '/base',
     icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
     items: [
@@ -99,39 +99,6 @@ const _nav = [
         to: '/images/web',
       },
     ]}
-
-  // {
-  //   component: CNavTitle,
-  //   name: 'Extras',
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Pages',
-  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Login',
-  //       to: '/login',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Register',
-  //       to: '/register',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Error 404',
-  //       to: '/404',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Error 500',
-  //       to: '/500',
-  //     },
-  //   ],
-  // },
-
 ]
 
 export default _nav

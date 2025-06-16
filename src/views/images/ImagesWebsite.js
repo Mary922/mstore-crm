@@ -9,8 +9,6 @@ const ImagesWebsite = () => {
   const [files, setFiles] = useState(null);
 
   const [field, setField] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-
   const [selectedOption, setSelectedOption] = useState(null);
 
   const options = [
@@ -42,10 +40,10 @@ const ImagesWebsite = () => {
 
   const checkFilledCheckbox = async () => {
     if (field === '') {
-      console.log('Choose field');
+      // console.log('Choose field');
     }
     if (files === null) {
-      console.log('Add files');
+      // console.log('Add files');
     }
 
     await handleUploadImage();
@@ -56,13 +54,11 @@ const ImagesWebsite = () => {
     setImageIds(res.imageIds);
   };
 
-
-
-  console.log('FIELD',field)
-
   return (
     <>
+      <div className='mx-4 my-2'>
       <CCard>
+        <div className='mx-4 my-2'>
         <CRow>
           {options.map((option) => (
             <CFormCheck
@@ -74,15 +70,15 @@ const ImagesWebsite = () => {
               disabled={selectedOption !== null && selectedOption !== option.id}
             />
           ))}
-          {/*<CFormCheck id="flexCheckDefault" value={'header'} disabled={isChecked} onChange={(event) => saveField(event.target.value)} label="Header"/>*/}
-          {/*<CFormCheck id="flexCheckDefault" value={'footer'} onChange={(event) => saveField(event.target.value)} label="Footer"/>*/}
           <CForm id={"form"}>
-            <CFormLabel htmlFor={"name"}>Images crm:</CFormLabel>
+            <CFormLabel htmlFor={"name"}>Картинки для сайта:</CFormLabel>
             <CFormInput id={"file"} type={"file"} onChange={handleFileChange} multiple={true}></CFormInput>
-            <CButton onClick={checkFilledCheckbox}>Загрузить картинку</CButton>
+            <CButton className='my-2' onClick={checkFilledCheckbox}>Загрузить картинку</CButton>
           </CForm>
         </CRow>
+        </div>
       </CCard>
+      </div>
     </>
   );
 };

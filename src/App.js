@@ -1,5 +1,5 @@
-import React, { Suspense, } from "react";
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import React, { Suspense, useEffect, useState,useCallback } from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import './scss/style.scss'
 
 const loading = (
@@ -19,14 +19,6 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 
 const App = () => {
-  // const [tokenIsLoaded, setTokenIsLoaded] = useState(false);
-  const token = localStorage.getItem('token');
-
-  // useEffect(()=>{
-  //   if (token) {
-  //     setTokenIsLoaded(true)
-  //   }
-  // },[])
 
 
     return (

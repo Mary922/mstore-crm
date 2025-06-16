@@ -41,7 +41,6 @@ export const BrandsSlice = createSlice({
     builder.addCase(getBrandsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isLoaded = true;
-      // console.log('PASDASDASD', action.payload);
       state.brands = action.payload;
 
     });

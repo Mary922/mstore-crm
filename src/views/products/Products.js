@@ -27,7 +27,6 @@ const Products = () => {
   const products = useSelector(state => {
     return state.products.products
   })
-  // console.log('PRODUCTS', products);
 
   const redirectToProduct = (id) => {
     navigate(`/product/${id}`);
@@ -68,25 +67,24 @@ const Products = () => {
         <CCol xs={12}>
           <CCard>
             <CCardBody>
-              <CButton onClick={redirectToNewProduct}>Add new product</CButton>
-
+              <CButton onClick={redirectToNewProduct} className='mb-2'>Добавить новый продукт</CButton>
               <CTable striped hover bordered>
                 <CTableHead color="primary">
                   <CTableRow>
                     <CTableHeaderCell scope={"col"}>Id</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Product name</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Unit</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Price</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Tags</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Categories</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Colors</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Season</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Sizes</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Country</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Brand</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Description</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>created</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>deleted</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Название</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Ед.изм.</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Цена</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Теги</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Категории</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Цвета</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Сезон</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Размеры</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Страна</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Бренд</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Описание</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Создано</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Удалено</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>

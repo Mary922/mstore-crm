@@ -1,83 +1,59 @@
 import React from 'react'
-import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from "react-router-dom";
 import {
   CContainer,
   CHeader,
-  CHeaderBrand,
-  CHeaderDivider,
   CHeaderNav,
-  CHeaderToggler,
-  CNavLink,
-  CNavItem,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
-import { AppHeaderDropdown } from './header/index'
-import { logo } from 'src/assets/brand/logo'
+import { CIcon } from '@coreui/icons-react';
+import { cilAccountLogout } from '@coreui/icons';
+
+
 
 const AppHeader = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const logOut = () => {
+    if (user) {
+      localStorage.removeItem('user');
+    }
+  }
+  const redirectToLogin = () => {
+    navigate(`/login`);
+  }
+
 
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
-        <CHeaderToggler
-          className="ps-1"
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
-        >
-          <CIcon icon={cilMenu} size="lg" />
-        </CHeaderToggler>
-        <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <CIcon icon={logo} height={48} alt="Logo" />
-        </CHeaderBrand>
-        <CHeaderNav className="d-none d-md-flex me-auto">
-
-          <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
-          </CNavItem>
-        </CHeaderNav>
         <CHeaderNav>
-          {/*<CNavItem>*/}
-          {/*  <CNavLink href="#">*/}
-          {/*    <CIcon icon={cilBell} size="lg" />*/}
-          {/*  </CNavLink>*/}
-          {/*</CNavItem>*/}
-          {/*<CNavItem>*/}
-          {/*  <CNavLink href="#">*/}
-          {/*    <CIcon icon={cilList} size="lg" />*/}
-          {/*  </CNavLink>*/}
-          {/*</CNavItem>*/}
-          {/*<CNavItem>*/}
-          {/*  <CNavLink href="#">*/}
-          {/*    <CIcon icon={cilEnvelopeOpen} size="lg" />*/}
-          {/*  </CNavLink>*/}
-          {/*</CNavItem>*/}
+          <AppBreadcrumb />
         </CHeaderNav>
-        <CHeaderNav className="ms-3">
-          <AppHeaderDropdown />
-        </CHeaderNav>
-        <CNavItem>
-          <CNavLink>
-            <div onClick={()=> {
-              navigate('/login');
-            }}>User</div>
-          </CNavLink>
-        </CNavItem>
-      </CContainer>
-      <CHeaderDivider />
-      <CContainer fluid>
-        <AppBreadcrumb />
+        <div className='flex items-center justify-center'>
+          <div className="flex flex-row">
+            {
+              user ?
+                <>
+                <div className='mr-2'>Привет,{user?.username}</div>
+                <CIcon size='xl'
+                       className="cursor-pointer"
+                       onClick={()=>{
+                         logOut();
+                         navigate("/login");
+                       }} icon={cilAccountLogout} />
+                </>
+                    :
+                <div className='cursor-pointer' onClick={redirectToLogin}>Войти</div>
+            }
+          </div>
+        </div>
       </CContainer>
     </CHeader>
-  )
+  );
 }
 
 export default AppHeader

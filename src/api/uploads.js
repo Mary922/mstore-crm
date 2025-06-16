@@ -4,8 +4,6 @@ import {BASE_URL} from "../config";
 
 export const uploadImage = (files) => {
 
-  // formData.append("files", files);
-
   if (files) {
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -23,9 +21,6 @@ export const uploadImage = (files) => {
 
 
 export const uploadImageStatic = (files, type, field) => {
-
-  // formData.append("files", files);
-
 
   if (files) {
     const formData = new FormData();

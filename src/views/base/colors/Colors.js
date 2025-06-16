@@ -41,7 +41,6 @@ const Colors = () => {
   const colors = useSelector(state => {
     return state.colors.colors;
   });
-  console.log("COLORS", colors);
 
   const colorsList = colors.map(color => {
     return (
@@ -51,7 +50,7 @@ const Colors = () => {
       }}>
         <CTableDataCell>{color.color_id}</CTableDataCell>
         <CTableDataCell>{color.color_name}</CTableDataCell>
-        <CTableDataCell><div style={{backgroundColor: color.color_rgb,height: '50px'}}></div></CTableDataCell>
+        <CTableDataCell><div style={{backgroundColor: color.color_rgb,height: '50px',width: '50px'}}></div></CTableDataCell>
       </CTableRow>
     );
   });
@@ -77,7 +76,7 @@ const Colors = () => {
               </CTable>
             </CCardBody>
           </CCard>
-          <CButton color="primary" onClick={openModal}>Добавить цвет</CButton>
+          <CButton className='mx-2 my-2' color="primary" onClick={openModal}>Добавить цвет</CButton>
         </CCol>
       </CRow>
       {

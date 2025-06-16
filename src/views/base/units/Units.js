@@ -34,7 +34,6 @@ const Units = () => {
   const units = useSelector(state => {
     return state.units.units;
   });
-  console.log("UNITS", units);
 
   const unitsList = units.map(unit => {
     return (
@@ -68,7 +67,7 @@ const Units = () => {
               </CTable>
             </CCardBody>
           </CCard>
-          <CButton color="primary" onClick={openModal}>Добавить единицу измерения</CButton>
+          <CButton className='my-2 mx-2' color="primary" onClick={openModal}>Добавить единицу измерения</CButton>
         </CCol>
       </CRow>
       {

@@ -43,12 +43,9 @@ const Categories = () => {
   const categories = useSelector(state => {
     return state.categories.categories;
   });
-  console.log("CATEGORIES", categories);
-  console.log('category', category);
 
   const categoriesList = categories.map(category => {
     const parentCategory = categories.find(cat => cat.category_id === category.parent_id);
-    console.log('parentCategory', parentCategory);
     return (
       <CTableRow key={category.category_id} onClick={() => {
         openModal();
@@ -84,7 +81,7 @@ const Categories = () => {
               </CTable>
             </CCardBody>
           </CCard>
-          <CButton color="primary" onClick={openModal}>Добавить категорию</CButton>
+          <CButton className='mx-2 my-2' color="primary" onClick={openModal}>Добавить категорию</CButton>
         </CCol>
       </CRow>
       {

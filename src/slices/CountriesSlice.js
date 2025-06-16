@@ -25,7 +25,6 @@ export const CountriesSlice = createSlice({
     builder.addCase(getCountriesThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isLoaded = true;
-      // console.log('PASDASDASD', action.payload);
       state.countries = action.payload;
 
     });

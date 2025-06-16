@@ -26,7 +26,6 @@ export const SeasonsSlice = createSlice({
     builder.addCase(getSeasonsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isLoaded = true;
-      // console.log('PASDASDASD', action.payload);
       state.seasons = action.payload;
 
     });

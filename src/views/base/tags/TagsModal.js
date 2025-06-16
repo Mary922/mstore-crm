@@ -3,7 +3,7 @@ import { CButton, CModal, CModalHeader, CModalTitle, CModalFooter, CModalBody, C
 import { useDispatch } from "react-redux";
 import { createTagsThunk, getTagsThunk, updateTagsThunk } from "../../../slices/TagsSlice";
 
-const TagsModal = ({openModal,closeModal,tag,deleteTags}) => {
+const TagsModal = ({closeModal,tag,deleteTags}) => {
   const dispatch = useDispatch();
   const [tagValue, setTagValue] = useState(tag ? tag.tag_name : '');
 

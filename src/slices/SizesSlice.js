@@ -26,7 +26,6 @@ export const SizesSlice = createSlice({
     builder.addCase(getSizesThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isLoaded = true;
-      // console.log('PASDASDASD', action.payload);
       state.sizes = action.payload;
 
     });

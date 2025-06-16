@@ -3,7 +3,7 @@ import { CButton, CModal, CModalHeader, CModalTitle, CModalFooter, CModalBody, C
 import { useDispatch } from "react-redux";
 import { createUnitsThunk, getUnitsThunk, updateUnitsThunk } from "../../../slices/UnitsSlice";
 
-const UnitsModal = ({openModal,closeModal,unit}) => {
+const UnitsModal = ({closeModal,unit}) => {
   const dispatch = useDispatch();
   const [unitValue, setUnitValue] = useState(unit ? unit.unit_name : '');
 

@@ -116,8 +116,6 @@ const Product = () => {
         if (currentProductId) {
           try {
             const result = await getProduct(currentProductId);
-            console.log("RES PRODUCT", result);
-
             const product = result.data.product;
             setProduct(product);
 
@@ -129,8 +127,6 @@ const Product = () => {
               const actual = result.data.priceActual;
               setActualPrice(actual);
             }
-            // console.log('pricespricesprices',prices);
-
             let selectedTagsOptions = [];
             let selectedCategoriesOptions = [];
             let selectedColorsOptions = [];
@@ -200,11 +196,8 @@ const Product = () => {
 
 
   const setFieldChange = (field, value) => {
-    // console.log(field, value);
     setForm((prevState) => {
-      // console.log("prev", prevState);
       let newState = { ...prevState, [field]: value };
-      // console.log("newState", newState);
       return newState;
     });
   };
@@ -364,7 +357,6 @@ const Product = () => {
       imageIds: imageIds
 
     });
-    //navigate(-2);
     dispatch(getProductsThunk());
   };
 
@@ -400,7 +392,6 @@ const Product = () => {
     if (form.gender_id === -1) {
       arrayOfNotFilledInputs.push("gender");
     }
-    // console.log({ arrayOfNotFilledInputs });
     if (arrayOfNotFilledInputs.length > 0) {
       alert(`Fill ${arrayOfNotFilledInputs.join(",")}`);
       return false;
@@ -435,17 +426,21 @@ const Product = () => {
 
   return (
     <>
+      <div className='mx-4 w-auto'>
       <CCard>
         <CCardHeader>
+          <div className='mx-auto 0 w-[1000px] p-1'>
           <div>Id: {currentProductId}</div>
           {
             currentProductId ?
               <CIcon icon={cilPencil} style={{ width: "40px", height: "40px" }} onClick={() => setIsEditMode(true)} />
               : null
           }
+          </div>
         </CCardHeader>
 
         <CCardBody>
+          <div className='w-[1000px] mx-auto'>
           <CFormLabel>Name: </CFormLabel>
           <CFormInput type={"text"}
                       disabled={!isEditMode}
@@ -500,17 +495,6 @@ const Product = () => {
                        value={form.season_id}
                        onChange={(event) => setFieldChange("season_id", Number.parseInt(event.target.value))}
           />
-          {/*{optionsSizesCheckbox.map((option) => (*/}
-          {/*  <CFormCheck*/}
-          {/*    key={option.id}*/}
-          {/*    id={option.id}*/}
-          {/*    label={option.label}*/}
-          {/*    checked={selectedOption === option.id}*/}
-          {/*    onChange={() => handleChangeCheckbox(option.id)}*/}
-          {/*    disabled={selectedOption !== null && selectedOption !== option.id}*/}
-          {/*  />*/}
-          {/*))}*/}
-          {/*<br />*/}
 
           <CFormLabel>Sizes: </CFormLabel>
           <Select isMulti
@@ -562,6 +546,7 @@ const Product = () => {
                          value={form.product_description ? form.product_description : ""}
                          onChange={(event) => setFieldChange("product_description", event.target.value)}
           />
+          </div>
 
         </CCardBody>
         :
@@ -569,21 +554,21 @@ const Product = () => {
       <CRow>
         <CCol xs={12}>
           <CCard>
-            <CCardHeader>Prices</CCardHeader>
+            <CCardHeader>Цены</CCardHeader>
             <CCardBody>
               <CTable striped hover bordered>
                 <CTableHead color="primary">
                   <CTableRow>
-                    <CTableHeaderCell scope={"col"}>Price id</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Price</CTableHeaderCell>
-                    <CTableHeaderCell scope={"col"}>Time beginning</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>id</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Цена</CTableHeaderCell>
+                    <CTableHeaderCell scope={"col"}>Время начала</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
                   {pricesList}
                 </CTableBody>
               </CTable>
-              <div>Actual price: {actualPrice.price} </div>
+              <div>Актуальная цена: {actualPrice.price} </div>
             </CCardBody>
             {
               priceCreateMode ?
@@ -596,30 +581,32 @@ const Product = () => {
                 </CCardGroup>
                 : null
             }
-            <CButton style={{ width: "100px", marginBottom: "10px", marginLeft: "15px" }}
+            <CButton style={{ width: "140px", marginBottom: "10px", marginLeft: "15px" }}
                      onClick={priceCreateToggleMode}>
               {
-                priceCreateMode ? "Dont add price" : "Add price"
+                priceCreateMode ? "Не добавлять цену" : "Добавить цену"
               }
             </CButton>
+            <div className='p-3'>
             <CRow>
               <CForm id={"form"}>
-                <CFormLabel htmlFor={"name"}>Image:</CFormLabel>
+                <CFormLabel htmlFor={"name"}>Картинки:</CFormLabel>
                 <CFormInput id={"file"} type={"file"} onChange={handleFileChange} multiple={true}></CFormInput>
-                <CButton onClick={handleUploadImage}>Загрузить картинку</CButton>
+                <CButton className='my-2' onClick={handleUploadImage}>Загрузить картинку</CButton>
               </CForm>
             </CRow>
+            </div>
+
           </CCard>
         </CCol>
       </CRow>
 
       {
         currentProductId ?
-          <CButton onClick={handleUpdateProduct}>Обновить продукт</CButton>
+          <CButton className='my-2' onClick={handleUpdateProduct}>Обновить продукт</CButton>
           :
           <CButton onClick={() => {
             if (!checkFilledForms()) {
-              // alert('Заполните данные');
               return false;
             }
             ;
@@ -628,6 +615,7 @@ const Product = () => {
           }}>Добавить продукт</CButton>
 
       }
+      </div>
     </>
   );
 };

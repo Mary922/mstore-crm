@@ -25,22 +25,19 @@ const Clients = () => {
     })();
   }, []);
 
-  console.log('clients', clients);
-
-  const clientsList = clients.map((client) => {
-    return (
-      <CTableRow key={client.client_id}>
-      <CTableDataCell>{client.client_id}</CTableDataCell>
-      <CTableDataCell>{client.client_name}</CTableDataCell>
-      <CTableDataCell>{client.client_surname}</CTableDataCell>
-      <CTableDataCell>{client.client_email}</CTableDataCell>
-      <CTableDataCell>{client.client_password}</CTableDataCell>
-      <CTableDataCell>{moment.unix(client.client_birthday).format("MM.DD.YYYY HH:mm")}</CTableDataCell>
-      <CTableDataCell>{moment.unix(client.created_at).format("MM.DD.YYYY HH:mm")}</CTableDataCell>
-      </CTableRow>
-    )
-  })
-
+    const clientsList = clients.map((client) => {
+      return (
+        <CTableRow key={client.client_id}>
+          <CTableDataCell>{client.client_id}</CTableDataCell>
+          <CTableDataCell>{client.client_name}</CTableDataCell>
+          <CTableDataCell>{client.client_surname}</CTableDataCell>
+          <CTableDataCell>{client.client_email}</CTableDataCell>
+          <CTableDataCell>{client.client_password}</CTableDataCell>
+          <CTableDataCell>{moment.unix(client.client_birthday).format("MM.DD.YYYY HH:mm")}</CTableDataCell>
+          <CTableDataCell>{moment.unix(client.created_at).format("MM.DD.YYYY HH:mm")}</CTableDataCell>
+        </CTableRow>
+      )
+    })
 
   return (
     <>
@@ -66,10 +63,8 @@ const Clients = () => {
               </CTable>
             </CCardBody>
           </CCard>
-          {/*<CButton onClick={redirectToNewProduct}>Add new product</CButton>*/}
         </CCol>
       </CRow>
-
     </>
   )
 }

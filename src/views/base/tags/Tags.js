@@ -42,7 +42,6 @@ const Tags = () => {
   const tags = useSelector(state => {
     return state.tags.tags;
   });
-  console.log("TAGS", tags);
 
   const tagsList = tags.map(tag => {
     return (

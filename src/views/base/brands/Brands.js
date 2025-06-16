@@ -68,7 +68,7 @@ const Brands = () => {
               </CTable>
             </CCardBody>
           </CCard>
-          <CButton color="primary" onClick={openModal}>Добавить бренд</CButton>
+          <CButton className='mx-2 my-2' color="primary" onClick={openModal}>Добавить бренд</CButton>
         </CCol>
       </CRow>
       {

@@ -22,9 +22,6 @@ const CategoriesModal = ({openModal,closeModal,category,deleteCategory}) => {
   const [categories, setCategories] = useState([]);
   const [categoryInputSelectedValue, setCategoryInputSelectedValue] = useState('');
 
-  console.log('genderValue', genderValue);
-  console.log('categoryInputSelectedValue', categoryInputSelectedValue);
-
   useEffect(()=> {
     (async ()=> {
       try {
@@ -33,24 +30,14 @@ const CategoriesModal = ({openModal,closeModal,category,deleteCategory}) => {
         setGenders(gendersList);
 
         const categories = await getCategories();
-        console.log('cats',categories.data);
         if (categories.data.length > 0) {
           setCategories(categories.data);
         }
-
-        // const parentsCat = await getParentsCategories();
-        // const parentsList = parentsCat.data;
-        // console.log('parentsList',parentsList);
-
-
       } catch (error) {
         console.log(error);
       }
     })();
   },[])
-  console.log('genders', genders);
-  console.log('parrr',categories);
-
 
   const checkFilledInput = () => {
     if (categoryValue.trim().length < 1 || categoryValue === '' || genderValue === -1) {
@@ -83,9 +70,6 @@ const CategoriesModal = ({openModal,closeModal,category,deleteCategory}) => {
     }
     categoriesOptions.push(obj);
   }
-  // console.log('categoriesOptions',categoriesOptions);
-
-
 
   return (
     <>
